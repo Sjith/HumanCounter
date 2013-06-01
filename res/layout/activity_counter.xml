@@ -1,0 +1,42 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <com.necessary.humancounter.view.CameraView
+        android:id="@+id/cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/infoView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/question_mark"
+        android:background="@drawable/counter_bg"
+        android:gravity="center"
+        android:layout_gravity="bottom|right"
+        android:textStyle="bold"
+        android:textSize="40sp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="31dp"
+        android:layout_marginBottom="37dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/detectionStateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|bottom"
+		android:layout_marginBottom="20dp"
+		android:layout_marginLeft="20dp"
+		android:background="@null"
+		android:contentDescription="@string/app_name"
+        android:src="@drawable/fine" />
+
+</FrameLayout>
