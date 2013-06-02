@@ -3,15 +3,39 @@ package com.necessary.humancounter.detectors;
 import java.util.ArrayList;
 import java.util.List;
 import com.necessary.humancounter.models.IRecognizedFaceHolder;
+import com.necessary.humancounter.utils.FaceAnalyzeUtils;
 
 public class HumanRecognitionController {
 	
+	/*
+	 * Capacity of recognition history
+	 */
 	private static final Integer HISTORY_CAPACITY = 10;
 	
+	/*
+	 * Limit of warning, when warningCount > WARNINGS_LIMIT
+	 * then app should return ERROR
+	 */
+	private static final Integer WARNINGS_LIMIT = 3;
+	
+	/*
+	 * List which store faces from further analyzes
+	 */
 	private final List<IRecognizedFaceHolder> facesHistory;
 	
+	/*
+	 * Counter to check how many faces were added after last analyze
+	 */
 	private Integer addedFacesCounter = 0;
 	
+	/*
+	 * Count how many warning were found
+	 */
+	private Integer warningCount = 0;
+	
+	/*
+	 * Result of analyze
+	 */
 	private DetectorResults globalResult = DetectorResults.FINE;
 	
 	public HumanRecognitionController() {
@@ -65,10 +89,25 @@ public class HumanRecognitionController {
 			}
 		} 
 
+		if (warningCount >= WARNINGS_LIMIT) {
+			result = DetectorResults.ERROR;
+		} else {
+			if (result.equals(DetectorResults.WARNING)) {
+				warningCount++;
+			} 
+			else if (warningCount >= 0) {
+				warningCount--;
+			}
+		}
+
 		return result;
 	}
 	
 	private DetectorResults analyseForDispute() {
+		if (FaceAnalyzeUtils.ifSomeoneGoneByFacesCount(facesHistory)) {
+			return DetectorResults.WARNING;
+		}
+		
 		return DetectorResults.FINE;
 	}
 	

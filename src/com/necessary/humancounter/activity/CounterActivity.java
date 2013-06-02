@@ -143,7 +143,7 @@ public class CounterActivity extends Activity implements OnFocusListener, OnPict
 				detectionProgressBar.setVisibility(View.INVISIBLE);
 			}
 			
-			FaceAnalyseTask analyseTask = new FaceAnalyseTask(); 
+			FaceAnalyzeTask analyseTask = new FaceAnalyzeTask(); 
 			analyseTask.execute(result);
 			
 			detectionInProgress = false;
@@ -168,7 +168,7 @@ public class CounterActivity extends Activity implements OnFocusListener, OnPict
 		
 	}
 	
-	private class FaceAnalyseTask extends AsyncTask<IRecognizedFaceHolder, DetectorResults, DetectorResults> {
+	private class FaceAnalyzeTask extends AsyncTask<IRecognizedFaceHolder, DetectorResults, DetectorResults> {
 
 		@Override
 		protected DetectorResults doInBackground(IRecognizedFaceHolder... params) {
