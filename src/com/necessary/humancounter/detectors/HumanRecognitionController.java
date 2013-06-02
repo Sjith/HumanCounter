@@ -31,7 +31,7 @@ public class HumanRecognitionController {
 	/*
 	 * Count how many warning were found
 	 */
-	private Integer warningCount = 0;
+	private Integer warningsCount = 0;
 
 	public HumanRecognitionController() {
 		this.facesHistory = new ArrayList<IRecognizedFaceHolder>();
@@ -53,7 +53,7 @@ public class HumanRecognitionController {
 			facesHistory.remove(0);
 		}
 		
-		if (warningCount >= WARNINGS_LIMIT) {
+		if (warningsCount >= WARNINGS_LIMIT) {
 			result = DetectorResults.ERROR;
 		}
 		
@@ -67,20 +67,20 @@ public class HumanRecognitionController {
 			IRecognizedFaceHolder fHolder = facesHistory.get(facesHistory.size() - 2);
 			IRecognizedFaceHolder sHolder = facesHistory.get(facesHistory.size() - 1);
 			
-			if (fHolder.getFacesCount() != sHolder.getFacesCount()) {
+			if (fHolder.getFacesCount() != sHolder.getFacesCount() || warningsCount > 0) {
 				if (facesHistory.size() > 2) {
 					result = analyseForDispute();
 				} else {
 					result = DetectorResults.WARNING;
 				}
-			}
+			} 
 		} 
 
 		if (result.equals(DetectorResults.WARNING)) {
-			warningCount++;
+			warningsCount++;
 		} 
-		else if (warningCount >= 0) {
-			warningCount--;
+		else if (warningsCount >= 0) {
+			warningsCount--;
 		}
 
 		return result;
@@ -96,11 +96,11 @@ public class HumanRecognitionController {
 	
 	private DetectorResults analyseHistory() {
 		if (FaceAnalyzeUtils.ifSomeoneGoneInHistoryByFacesCount(facesHistory)) {
-			warningCount++;
+			warningsCount++;
 			return DetectorResults.WARNING;
 		}
 		
-		warningCount = 0;
+		warningsCount = 0;
 		return DetectorResults.FINE;
 	}
 	
