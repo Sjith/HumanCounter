@@ -32,12 +32,7 @@ public class HumanRecognitionController {
 	 * Count how many warning were found
 	 */
 	private Integer warningCount = 0;
-	
-	/*
-	 * Result of analyze
-	 */
-	private DetectorResults globalResult = DetectorResults.FINE;
-	
+
 	public HumanRecognitionController() {
 		this.facesHistory = new ArrayList<IRecognizedFaceHolder>();
 	}
@@ -58,19 +53,7 @@ public class HumanRecognitionController {
 			facesHistory.remove(0);
 		}
 		
-		if (!globalResult.equals(result)) {
-			if (facesHistory.size() > 2) {
-				if (addedFacesCounter == 0) {
-					globalResult = result;
-				} else {
-					
-				}
-			} else {
-				globalResult = result;
-			}
-		}
-		
-		return globalResult;
+		return result;
 	}
 	
 	private DetectorResults analyseLastFaces() {
@@ -112,6 +95,10 @@ public class HumanRecognitionController {
 	}
 	
 	private DetectorResults analyseHistory() {
+		if (FaceAnalyzeUtils.ifSomeoneGoneInHistoryByFacesCount(facesHistory)) {
+			return DetectorResults.WARNING;
+		}
+		
 		return DetectorResults.FINE;
 	}
 	
