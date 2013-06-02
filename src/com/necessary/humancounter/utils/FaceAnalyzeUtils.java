@@ -83,13 +83,9 @@ public class FaceAnalyzeUtils {
 		while(indices.size() < howMany) {
 			int randomIndex = random.nextInt(facesList.size() - 1);
 			if (randomIndex != 0) {
-				if (indices.size() == 0) {
+				if (indices.size() == 0 || !indices.contains(randomIndex)) {
 					indices.add(randomIndex);
-				} else {
-					if (!indices.contains(randomIndex)) {
-						indices.add(randomIndex);
-						faces.add(facesList.get(randomIndex));
-					}
+					faces.add(facesList.get(randomIndex));
 				}
 			}
 		}
