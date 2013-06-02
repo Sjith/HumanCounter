@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import android.media.FaceDetector.Face;
+
 import com.necessary.humancounter.models.IRecognizedFaceHolder;
 
 public class FaceAnalyzeUtils {
@@ -67,6 +69,45 @@ public class FaceAnalyzeUtils {
 		                                                                                                                                                                                                                                                                           
 		if (testWarnings >= MAX_WARNINGS) {
 			return true;
+		}
+		
+		return false;
+	}
+	
+	/*
+	 * Check if someone has disappeared from classes in history.
+	 * Qualitative evaluation!
+	 */
+	public static final boolean ifSomeoneGoneInHistoryByQuality(List<IRecognizedFaceHolder> facesList) {
+		final int TEST_ELEMENTS = 2;
+		
+		List<IRecognizedFaceHolder> fRandomFaces = FaceAnalyzeUtils.getRandomFaces(facesList, TEST_ELEMENTS);
+		
+		/*
+		 * This test was made spontaneously.
+		 * It means that there is no one good way to test faces.
+		 * If you have a mainframe smartphone with 16 cores you can implement 
+		 * other test which test every face - one by one.
+		 */
+		Face[] fFaces = fRandomFaces.get(0).getFacesArray();
+		Face[] sFaces = fRandomFaces.get(1).getFacesArray();
+		
+		Random random = new Random();
+		int randomIndex = random.nextInt(fFaces.length - 1);
+		
+		if (sFaces.length > randomIndex) {
+			return true;
+		} 
+		else {
+			Face fFace = fFaces[randomIndex];
+			Face sFace = sFaces[randomIndex];
+			if (fFace.confidence() > 0.3 && sFace.confidence() > 0.3) {
+				if (fFace.eyesDistance() != sFace.eyesDistance()) {
+					return true;
+				}
+			} else {
+				return FaceAnalyzeUtils.ifSomeoneGoneInHistoryByQuality(facesList);
+			}
 		}
 		
 		return false;
