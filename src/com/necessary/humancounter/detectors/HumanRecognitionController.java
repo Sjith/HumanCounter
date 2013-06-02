@@ -53,6 +53,10 @@ public class HumanRecognitionController {
 			facesHistory.remove(0);
 		}
 		
+		if (warningCount >= WARNINGS_LIMIT) {
+			result = DetectorResults.ERROR;
+		}
+		
 		return result;
 	}
 	
@@ -72,15 +76,11 @@ public class HumanRecognitionController {
 			}
 		} 
 
-		if (warningCount >= WARNINGS_LIMIT) {
-			result = DetectorResults.ERROR;
-		} else {
-			if (result.equals(DetectorResults.WARNING)) {
-				warningCount++;
-			} 
-			else if (warningCount >= 0) {
-				warningCount--;
-			}
+		if (result.equals(DetectorResults.WARNING)) {
+			warningCount++;
+		} 
+		else if (warningCount >= 0) {
+			warningCount--;
 		}
 
 		return result;
@@ -96,9 +96,11 @@ public class HumanRecognitionController {
 	
 	private DetectorResults analyseHistory() {
 		if (FaceAnalyzeUtils.ifSomeoneGoneInHistoryByFacesCount(facesHistory)) {
+			warningCount++;
 			return DetectorResults.WARNING;
 		}
 		
+		warningCount = 0;
 		return DetectorResults.FINE;
 	}
 	

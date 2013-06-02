@@ -22,18 +22,15 @@ public class FaceAnalyzeUtils {
 			IRecognizedFaceHolder tHolder = facesList.get(2);
 			
 			if (fHolder.getFacesCount() == sHolder.getFacesCount()) {
-			
 				if (sHolder.getFacesCount() != tHolder.getFacesCount()) {
 					return true;
 				}
-				
 			} else {
 				/*
 				 * We are not sure which estimation is good so we must 
 				 * compare random recognitions.
 				 */
 				List<IRecognizedFaceHolder> randomFaces = FaceAnalyzeUtils.getRandomFaces(facesList, 2);
-				
 				if (randomFaces.get(0).getFacesCount() != randomFaces.get(1).getFacesCount()) {
 					return true;
 				}
