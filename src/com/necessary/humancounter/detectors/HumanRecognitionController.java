@@ -95,13 +95,33 @@ public class HumanRecognitionController {
 	}
 	
 	private DetectorResults analyseHistory() {
+		int warnings = 0;
+		
 		if (FaceAnalyzeUtils.ifSomeoneGoneInHistoryByFacesCount(facesHistory)) {
-			warningsCount++;
-			return DetectorResults.WARNING;
+			warnings++;
+		} else {
+			warnings--;
 		}
 		
-		warningsCount = 0;
-		return DetectorResults.FINE;
+		if (FaceAnalyzeUtils.ifSomeoneGoneInHistoryByQuality(facesHistory)) {
+			warnings++;
+		} else {
+			warnings--;
+		}
+		
+		switch (warnings) {
+		case -2:
+			warningsCount = 0;
+			return DetectorResults.FINE;
+		case 0:
+			warningsCount = 1;
+			return DetectorResults.WARNING;
+		case 2:
+			warningsCount = 2;
+			return DetectorResults.WARNING;
+		default:
+			return DetectorResults.FINE;
+		}
 	}
 	
 }
