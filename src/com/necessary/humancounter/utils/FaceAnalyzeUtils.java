@@ -67,7 +67,7 @@ public class FaceAnalyzeUtils {
 				testWarnings++;
 			}
 		}
-		
+		                                                                                                                                                                                                                                                                           
 		if (testWarnings >= MAX_WARNINGS) {
 			return true;
 		}
