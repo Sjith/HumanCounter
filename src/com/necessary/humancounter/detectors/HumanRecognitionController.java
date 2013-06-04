@@ -32,6 +32,14 @@ public class HumanRecognitionController {
 	 * Count how many warning were found
 	 */
 	private Integer warningsCount = 0;
+	
+	/*
+	 * ACHTUNG!
+	 * This field is using for inform user about the couse of warning/error
+	 * It was created only for presentation. 
+	 * Refactor me!!!
+	 */
+	private String warningCause;
 
 	public HumanRecognitionController() {
 		this.facesHistory = new ArrayList<IRecognizedFaceHolder>();
@@ -55,6 +63,7 @@ public class HumanRecognitionController {
 		
 		if (warningsCount >= WARNINGS_LIMIT) {
 			result = DetectorResults.ERROR;
+			warningCause = "Zbyt du¿o zagadkowych znikniêæ. Du¿e prawdopodobieñstwo matactwa!";
 		}
 		
 		return result;
@@ -71,6 +80,7 @@ public class HumanRecognitionController {
 				if (facesHistory.size() > 2) {
 					result = analyseForDispute();
 				} else {
+					warningCause = "Coœ siê nie kalkuluje. Jeszcze to sprawdzimy...";
 					result = DetectorResults.WARNING;
 				}
 			} 
@@ -88,6 +98,7 @@ public class HumanRecognitionController {
 	
 	private DetectorResults analyseForDispute() {
 		if (FaceAnalyzeUtils.ifSomeoneGoneByFacesCount(facesHistory)) {
+			warningCause = "Ktoœ prawdopodobnie przed chwil¹ nawia³!";
 			return DetectorResults.WARNING;
 		}
 		
@@ -99,6 +110,7 @@ public class HumanRecognitionController {
 		
 		if (FaceAnalyzeUtils.ifSomeoneGoneInHistoryByFacesCount(facesHistory)) {
 			warnings++;
+			warningCause = "Za ma³o osób! Ktoœ chyba w miêdzyczasie znikn¹³ z sali!";
 		} else {
 			warnings--;
 		}
@@ -122,6 +134,10 @@ public class HumanRecognitionController {
 		default:
 			return DetectorResults.FINE;
 		}
+	}
+	
+	public String getCause() {
+		return warningCause;
 	}
 	
 }

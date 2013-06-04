@@ -13,10 +13,12 @@ import android.hardware.Camera.ShutterCallback;
 import android.media.FaceDetector;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.necessary.humancounter.R;
 import com.necessary.humancounter.callbacks.SilentFocusCallback;
@@ -192,7 +194,17 @@ public class CounterActivity extends Activity implements OnFocusListener, OnPict
 			} 
 			else if (DetectorResults.ERROR.equals(result)) {
 				resultButton.setImageDrawable(getResources().getDrawable(R.drawable.alert));
-			} 
+			}
+			
+			/*
+			 * Refactor me!
+			 */
+			String warningCause = recognitionController.getCause();
+			if (!DetectorResults.FINE.equals(result) && warningCause != null) {
+				Toast toast = Toast.makeText(CounterActivity.this, warningCause, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+				toast.show();
+			}
 		}
 
 		

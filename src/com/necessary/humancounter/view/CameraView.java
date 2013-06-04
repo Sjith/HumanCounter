@@ -34,7 +34,6 @@ public class CameraView extends SurfaceView implements SurfaceHolder.Callback, I
 		this(context, null, 0);
 	}
 	
-	
 	public void surfaceCreated(SurfaceHolder holder) {
 		iCamera = Camera.open();
         
