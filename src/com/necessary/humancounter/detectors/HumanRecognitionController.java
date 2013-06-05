@@ -76,7 +76,7 @@ public class HumanRecognitionController {
 			IRecognizedFaceHolder fHolder = facesHistory.get(facesHistory.size() - 2);
 			IRecognizedFaceHolder sHolder = facesHistory.get(facesHistory.size() - 1);
 			
-			if (fHolder.getFacesCount() != sHolder.getFacesCount() || warningsCount > 0) {
+			if (fHolder.getFacesCount() < sHolder.getFacesCount() || warningsCount > 0) {
 				if (facesHistory.size() > 2) {
 					result = analyseForDispute();
 				} else {
